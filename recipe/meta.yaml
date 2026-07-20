@@ -1,0 +1,55 @@
+{% set name = "nexus-rpc" %}
+{% set version = "1.4.0" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name.replace("-", "_") }}-{{ version }}.tar.gz
+  sha256: 3b8b373d4865671789cc43623e3dc0bcbf192562e40e13727e17f1c149050fba
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  skip: true  # [py<310]
+
+requirements:
+  host:
+    - python
+    - hatchling
+    - pip
+  run:
+    - python
+    - typing_extensions >=4.12.2
+
+tests:
+  imports:
+    - nexusrpc
+  source_files:
+    - tests
+  commands:
+    - pip check
+    - pytest -vv tests
+  requires:
+    - pip
+    - pytest
+
+about:
+  homepage: https://github.com/nexus-rpc/sdk-python
+  license: MIT
+  license_file: LICENSE
+  summary: Nexus Python SDK
+  description: |
+    Nexus is a synchronous RPC protocol. 
+    Arbitrary duration operations are modeled on top of a set of pre-defined synchronous RPCs.
+  dev_url: https://github.com/nexus-rpc/sdk-python
+  doc_url: https://github.com/nexus-rpc/sdk-python
+
+extra:
+  recipe-maintainers:
+    - dgasmith
+    - nic-chira
+    - chrisjryan
+    - fzding
+    - chrisdeutsch
