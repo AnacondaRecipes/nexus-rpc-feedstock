@@ -23,21 +23,26 @@ requirements:
     - python
     - typing_extensions >=4.12.2
 
-tests:
+# FileNotFoundError: [Errno 2] No such file or directory: 'uv'
+{% set disabled_tests = " not test_type_checking_sync_operation.py" %}
+
+test:
   imports:
     - nexusrpc
   source_files:
     - tests
   commands:
     - pip check
-    - pytest -vv tests
+    - pytest -vv tests -k "{{ disabled_tests }}"
   requires:
     - pip
     - pytest
+    - pytest-asyncio
 
 about:
   homepage: https://github.com/nexus-rpc/sdk-python
   license: MIT
+  license_family: MIT
   license_file: LICENSE
   summary: Nexus Python SDK
   description: |
